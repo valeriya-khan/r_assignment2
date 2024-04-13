@@ -6,25 +6,56 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 ```
 
-## R Markdown
+# Description of the package
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+This package contains three functions that can be helpful in calculating different distances for machine learning tasks. These functions are:
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+* create_distribution
++ calculate_fid
+- cossim
 
-```{r cars}
-summary(cars)
+In addition, there are two example datasets of distributions.
+This is a link to [project repository](https://github.com/valeriya-khan/r_assignment2)
+
+## Create distribution
+The first function takes the distribution as an input and returns object of class distribution. The example usage can be seen below:
+
+```{r create_distribution}
+library(vkhanassignment2)
+wine <- read.table("http://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data",
+                   sep=",")
+wine_distribution1 <- create_distribution(wine[1:6])
+wine_distribution1
 ```
 
-## Including Plots
+## Calculate fid
 
-You can also embed plots, for example:
+The second provided function allows to calculate Frechet Inception distance between two distributions. The usage is as following:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r calculate_fid}
+library(expm)
+library(psych)
+wine <- read.table("http://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data",
+                   sep=",")
+wine_distribution1 <- create_distribution(wine[1:6])
+wine_distribution2 <- create_distribution(wine[7:12])
+calculate_fid(wine_distribution1, wine_distribution2)
+plot(wine_distribution1$V1, wine_distribution2$V9)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Calculate cossim
+Last function calculates cosine similarity of two given vectors. Example of usage:
+```{r cossim}
+cossim(c(1,2,3), c(4,5,6))
+```
+
+## Datasets
+Mean values of each of the dataset columns are as follows:
+
+| Name | Col1 | Col2 | Col3 | Col4 | Col5 | Col6 |
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| wine_distribution1 | 1.938202  | 13.000618   | 2.336348   | 2.366517 | 19.494944  | 99.741573  |
+| wine_distribution2 | 2.2951124  | 2.0292697  | 0.3618539 | 1.5908989  | 5.0580899  | 0.9574494  |
